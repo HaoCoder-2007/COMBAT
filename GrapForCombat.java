@@ -42,7 +42,7 @@ public class GrapForCombat
         {
             assassin();
         }
-        else
+        else if(role.equals("tanker"))
         {
             tanker();
         }
@@ -50,7 +50,7 @@ public class GrapForCombat
 
     public static void tutor()
     {
-        System.out.println("[1]" + DA_COLOR + " ATTACK" + ST_COLOR + " (-1)" + RESET_COLOR + "\n[2]" + DA_COLOR + " HEAVY ATTACK" + ST_COLOR + " (-2)" + RESET_COLOR + "\n[3]" + DF_COLOR + " DEFENSE" + ST_COLOR + " (-1)" + RESET_COLOR + "\n[0] SKIP" + ST_COLOR + " (+1)\n" + RESET_COLOR);
+        System.out.println("[1]" + DA_COLOR + " ATTACK" + ST_COLOR + " (-1 STRENGTH)" + RESET_COLOR + "\n[2]" + DA_COLOR + " HEAVY ATTACK" + ST_COLOR + " (-2 STRENGTH)" + RESET_COLOR + "\n[3]" + DF_COLOR + " DEFENSE" + ST_COLOR + " (-2 STRENGTH)" + RESET_COLOR + "\n[4]" + HP_COLOR + " >>>ULTMATE<<<" + ST_COLOR + " (-100 MANA)" + RESET_COLOR + "\n[0] SKIP" + ST_COLOR + " (+2 STRENGTH)\n" + RESET_COLOR);
     }
 
     public static void role()
@@ -58,7 +58,7 @@ public class GrapForCombat
         System.out.println("\nROLE:");
         System.out.println("[1] WARRIOR (HP: " + HP_COLOR + "100" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
         System.out.println("[2] ASSASSIN (HP: " + HP_COLOR + "85" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "25" + RESET_COLOR + ")");
-        System.out.println("[3] TANKER (HP: " + HP_COLOR + "140" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "17" + RESET_COLOR + ")");
+        System.out.println("[3] TANKER (HP: " + HP_COLOR + "120" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "15" + RESET_COLOR + ")");
     }
 
     public static void infoAll(FuncForCombat p1, FuncForCombat p2)
@@ -69,13 +69,14 @@ public class GrapForCombat
         System.out.printf("|%-15s |" + DA_COLOR + "%5.1f" + RESET_COLOR + "              |" + DA_COLOR + "%5.1f           " + RESET_COLOR + "|\n", "DAMAGE", p1.getDamage(), p2.getDamage());
         System.out.printf("|%-15s |" + DF_COLOR + "%5.1f" + RESET_COLOR + "              |" + DF_COLOR + "%5.1f           " + RESET_COLOR + "|\n", "DEFENSE", p1.getDefense(), p2.getDefense());
         System.out.printf("|%-15s |" + ST_COLOR + "   %2d" + RESET_COLOR + "              |" + ST_COLOR + "   %2d           " + RESET_COLOR + "|\n", "STRENGTH", p1.getStrength(), p2.getStrength());
+        System.out.printf("|%-15s |" + ST_COLOR + "   %2d" + RESET_COLOR + "              |" + ST_COLOR + "   %2d           " + RESET_COLOR + "|\n", "MANA", p1.getMana(), p2.getMana());
         System.out.println("\\=====================================================/\n\n");
     }
 
     public static void result(FuncForCombat p)
     {
-        System.out.println(printNO("\n           <FINISHED!>"));
-        System.out.println(printDA("              <WINNER>"));
+        System.out.println(printNO("\n    <FINISHED!>"));
+        System.out.println(printDA("     <WINNER>"));
         System.out.println(printNO("\n/-/-/-/ [" + p.getName() + "] \\-\\-\\-\\"));
         GrapForCombat.getGrapRole(p.getRole());
     }
@@ -103,48 +104,61 @@ public class GrapForCombat
         }
     }
 
+    public static void clearScreen(int step)
+    {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.printf("*STEP [%d]*\n", step);
+    }
+
     private static void warrior()
     {
         System.out.println("\n");
-        System.out.println("       /||\\       ");
-        System.out.println("       ||||       ");
-        System.out.println("       ||||       ");
-        System.out.println("       ||||       ");
-        System.out.println("      =\\||/=      ");
-        System.out.println("        ||        ");
-        System.out.println("        ||        ");
-        System.out.println("                  ");
-        System.out.println("     {WARRIOR}    ");
+        System.out.println(GrapForCombat.printNO("<KING'S RESTORATION>"));
+        System.out.println("                   ");
+        System.out.println("        /||\\       ");
+        System.out.println("        ||||       ");
+        System.out.println("        ||||       ");
+        System.out.println("        ||||       ");
+        System.out.println("       =\\||/=      ");
+        System.out.println("         ||        ");
+        System.out.println("         ||        ");
+        System.out.println("                   ");
+        System.out.println("      {WARRIOR}    ");
         System.out.println("\n");
     }
 
     private static void assassin()
     {
         System.out.println("\n");
-        System.out.println("    [ \\           ");
-        System.out.println("    [ /     <>    ");
-        System.out.println("    [/      ||    ");
-        System.out.println("    []      []    ");
-        System.out.println("    ||      /]    ");
-        System.out.println("    <>     / ]    ");
-        System.out.println("           \\ ]    ");
-        System.out.println("                  ");
-        System.out.println("    {ASSASSIN}    ");
+        System.out.println(GrapForCombat.printNO("<BLADE OF RETRIBUTION>"));
+        System.out.println("                   ");
+        System.out.println("     [ \\           ");
+        System.out.println("     [ /     <>    ");
+        System.out.println("     [/      ||    ");
+        System.out.println("     []      []    ");
+        System.out.println("     ||      /]    ");
+        System.out.println("     <>     / ]    ");
+        System.out.println("            \\ ]    ");
+        System.out.println("                   ");
+        System.out.println("     {ASSASSIN}    ");
         System.out.println("\n");
     }
 
     private static void tanker()
     {
         System.out.println("\n");
-        System.out.println("     ________     ");
-        System.out.println("    /        \\    ");
-        System.out.println("    |  ||||  |    ");
-        System.out.println("    | |||||| |    ");
-        System.out.println("    |  ||||  |    ");
-        System.out.println("    |   ||   |    ");
-        System.out.println("    \\________/    ");
-        System.out.println("                  ");
-        System.out.println("     {TANKER}     ");
+        System.out.println(GrapForCombat.printNO("  <IRON FORTRESS>"));
+        System.out.println("                   ");
+        System.out.println("      ________     ");
+        System.out.println("     /        \\    ");
+        System.out.println("     |  ||||  |    ");
+        System.out.println("     | |||||| |    ");
+        System.out.println("     |  ||||  |    ");
+        System.out.println("     |   ||   |    ");
+        System.out.println("     \\________/    ");
+        System.out.println("                   ");
+        System.out.println("      {TANKER}     ");
         System.out.println("\n");
     }
 }

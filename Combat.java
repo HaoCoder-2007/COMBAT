@@ -20,83 +20,113 @@ public class Combat
     {
         while(p1.getHP() > 0 && p2.getHP() > 0)
         {
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
-            System.out.printf("*STEP [%d]*\n", step);
+            GrapForCombat.clearScreen(step);
             turn = (turn == 1 ? 2 : 1);
             FuncForCombat activePlayer = (turn == 1) ? p1 : p2;
             FuncForCombat opponent = (turn == 1) ? p2 : p1;
-            System.out.println(GrapForCombat.printNO("\n" + activePlayer.getName() + " TURN:\n"));
-            GrapForCombat.tutor();
 
-            GrapForCombat.infoAll(p1, p2);
-            if (activePlayer.getStrength() <= 2)
-            {
-                GrapForCombat.printST("\n(!) WARNING: LOW STRENGTH!\n");
-            }
-
+            int isDone = 0;
             do {
-                System.out.println("=> Your choice: ");
-                choice = sc.nextInt();
+                GrapForCombat.clearScreen(step);
+                System.out.println(GrapForCombat.printNO("\n" + activePlayer.getName() + " TURN:\n"));
+                GrapForCombat.tutor();
+
+                GrapForCombat.infoAll(p1, p2);
+                if (activePlayer.getStrength() <= 2)
+                {
+                    GrapForCombat.printST("\n(!) WARNING: LOW STRENGTH!\n");
+                }
+
+                do {
+                    System.out.println("=> Your choice: ");
+                    choice = sc.nextInt();
+                    sc.nextLine();
+                    if(!FuncForCombat.isValidChoice(choice))
+                    {
+                        GrapForCombat.printNO("<INVALID! PLEASE TRY AGAIN!>");
+                    }
+                } while(!FuncForCombat.isValidChoice(choice));
+
+                GrapForCombat.clearScreen(step);
+
+                switch(choice)
+                {
+                    case 1:
+                    case 2:
+                    {
+                        GrapForCombat.clearScreen(step);
+                        if((choice == 1 && activePlayer.getStrength() < 1) || (choice == 2 && activePlayer.getStrength() < 2))
+                        {
+                            System.out.println(GrapForCombat.printST("\n<[" + activePlayer.getName() + "] BURNED OUT>\n"));
+                            GrapForCombat.infoAll(p1, p2);
+                            break;
+                        }
+                        System.out.println(GrapForCombat.printDA(choice == 1 ? "\n<ATTACK>" : "\n<HEAVY ATTACK>"));
+                        System.out.println(GrapForCombat.printDA("\n<[" + activePlayer.getName() + "] ATTACKED [" + opponent.getName() + "]>\n"));
+                        activePlayer.atk(opponent, choice);
+                        if (opponent.getHP() <= activePlayer.getDamage() && opponent.getHP() > 0)
+                        {
+                            GrapForCombat.flashWarning(opponent.getName());
+                        }
+                        GrapForCombat.infoAll(p1, p2);
+                        isDone = 1;
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        GrapForCombat.clearScreen(step);
+                        if(activePlayer.getStrength() < 1)
+                        {
+                            System.out.println(GrapForCombat.printST("\n[" + activePlayer.getName() + "] BURNED OUT!\n"));
+                            GrapForCombat.infoAll(p1, p2);
+                            break;
+                        }
+                        System.out.println(GrapForCombat.printDF("\n<DEFENSE>"));
+                        System.out.println(GrapForCombat.printDF("\n<[" + activePlayer.getName() + "] DEFENSE>"));
+                        activePlayer.def();
+                        GrapForCombat.infoAll(p1, p2);
+                        break;
+                    }
+
+                    case 4:
+                    {
+                        GrapForCombat.clearScreen(step);
+                        if(activePlayer.getMana() == 100)
+                        {
+                            activePlayer.ultimate(opponent);
+                            isDone = 1;
+                            GrapForCombat.infoAll(p1, p2);
+                            break;
+                        }
+                        else
+                        {
+                            System.out.println(GrapForCombat.printNO("\n<NOT ENOUGH MANA!>"));
+                            GrapForCombat.infoAll(p1, p2);
+                            break;
+                        }
+                    }
+
+                    default:
+                    {
+                        GrapForCombat.clearScreen(step);
+                        System.out.println(GrapForCombat.printNO("\n<SKIP>\n"));
+                        activePlayer.skip();
+                        GrapForCombat.infoAll(p1, p2);
+                        isDone = 1;
+                        break;
+                    }
+                }
+
+                if(isDone == 1)
+                {
+                    System.out.println(GrapForCombat.printNO("\n<TURN ENDED>"));
+                    activePlayer.manaTurn();
+                }
+                System.out.println(GrapForCombat.printNO("\n<PRESS [Enter] TO CONTINUE>"));
                 sc.nextLine();
-                if(!FuncForCombat.isValidChoice(choice))
-                {
-                    GrapForCombat.printNO("<INVALID! PLEASE TRY AGAIN!>");
-                }
-            } while(!FuncForCombat.isValidChoice(choice));
+            } while(isDone == 0);
 
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
-            System.out.printf("*STEP [%d]*\n", step);
-
-            switch(choice)
-            {
-                case 1:
-                case 2:
-                {
-                    if((choice == 1 && activePlayer.getStrength() < 1) || (choice == 2 && activePlayer.getStrength() < 2))
-                    {
-                        System.out.println(GrapForCombat.printST("\n<[" + activePlayer.getName() + "] BURNED OUT>\n"));
-                        GrapForCombat.infoAll(p1, p2);
-                        break;
-                    }
-                    System.out.println(GrapForCombat.printDA(choice == 1 ? "\n<ATTACK>" : "\n<HEAVY ATTACK>"));
-                    System.out.println(GrapForCombat.printDA("\n<[" + activePlayer.getName() + "] ATTACKED [" + opponent.getName() + "]>\n"));
-                    activePlayer.atk(opponent, choice);
-                    if (opponent.getHP() <= activePlayer.getDamage() && opponent.getHP() > 0)
-                    {
-                        GrapForCombat.flashWarning(opponent.getName());
-                    }
-                    GrapForCombat.infoAll(p1, p2);
-                    break;
-                }
-
-                case 3:
-                {
-                    if(activePlayer.getStrength() < 1)
-                    {
-                        System.out.println(GrapForCombat.printST("\n[" + activePlayer.getName() + "] BURNED OUT!\n"));
-                        GrapForCombat.infoAll(p1, p2);
-                        break;
-                    }
-                    System.out.println(GrapForCombat.printDF("\n<DEFENSE>"));
-                    System.out.println(GrapForCombat.printDF("\n<[" + activePlayer.getName() + "] DEFENSE>"));
-                    activePlayer.def();
-                    GrapForCombat.infoAll(p1, p2);
-                    break;
-                }
-
-                default:
-                {
-                    System.out.println(GrapForCombat.printNO("\n<SKIP>\n"));
-                    activePlayer.skip();
-                    GrapForCombat.infoAll(p1, p2);
-                    break;
-                }
-            }
-
-            System.out.println(GrapForCombat.printNO("\n<PRESS [Enter] TO CONTINUE>"));
-            sc.nextLine();
             step++;
         }
 

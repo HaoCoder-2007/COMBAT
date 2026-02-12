@@ -7,10 +7,13 @@ public class FuncForCombat
     private double damage;
     private double defense;
     private int strength;
+    private int mana;
     private final String name;
     private final String role;
-    private static final double NORMAL_HP = 100;
-    private static final double MAX_STRENGTH = 10; 
+    private static final int NORMAL_HP = 100;
+    private static final int MAX_DEFENSE = 50;
+    private static final int MAX_STRENGTH = 10;
+    private static final int MAX_MANA = 100;
     private static final Random RAND = new Random();
 
     //---------------------------------------------------------------------CONSTRUCTORS----------------------------------------------------------------------------------
@@ -45,17 +48,17 @@ public class FuncForCombat
             {
                 this.name = name;
                 this.role = "tanker";
-                this.hp = NORMAL_HP + 40;
-                this.damage = 17;
+                this.hp = NORMAL_HP + 20;
+                this.damage = 15;
                 this.defense = 0;
                 this.strength = 10;
                 break;
             }
 
-            default: //unknow
+            default: //unknown
             {
                 this.name = "";
-                this.role = "unknow";
+                this.role = "unknown";
                 this.hp = 0;
                 this.damage = 0;
                 this.defense = 0;
@@ -87,10 +90,16 @@ public class FuncForCombat
         return strength;
     }
 
+    public int getMana()
+    {
+        return mana;
+    }
+
     public String getName()
     {
         return name;
     }
+
     public String getRole()
     {
         return role;
@@ -108,11 +117,48 @@ public class FuncForCombat
         }
     }
 
-    //---------------------------------------------------------------------CHECKERS--------------------------------------------------------------------------------------
+    private void setDefense(double defense)
+    {
+        if(this.defense + defense >= MAX_DEFENSE)
+        {
+            this.defense = MAX_DEFENSE;
+        }
+        else
+        {
+            this.defense += defense;
+        }
+    }
+
+    private void setStrength(int strength)
+    {
+        if(this.strength + strength >= MAX_STRENGTH)
+        {
+            System.out.println(GrapForCombat.printST("\n(!) FULL STRENGTH!\n"));
+            this.strength = MAX_STRENGTH;
+        }
+        else
+        {
+            this.strength += strength;
+        }
+    }
+
+    private void setMana(int mana)
+    {
+        if(this.mana + mana >= MAX_MANA)
+        {
+            this.mana = MAX_MANA;
+        }
+        else
+        {
+            this.mana += mana;
+        }
+    }
+
+    //---------------------------------------------------------------------MANAGERS---------------------------------------------------------------------------------------
 
     public static boolean isValidChoice(int choice)
     {
-        return (choice >= 0 && choice <=3);
+        return (choice >= 0 && choice <=4);
     }
 
     private static boolean isValidRole(int role)
@@ -144,43 +190,37 @@ public class FuncForCombat
 
     //=====================================================================ACTION========================================================================================
 
-    private void subDefense()
-    {
-        double sub = RAND.nextDouble()+0.1;
-        this.defense -= Math.min(this.defense, sub);
-        System.out.println(GrapForCombat.printDF("<[" + this.name + "] REDUCED " + sub + " ARMOR>"));
-    }
-
     public void def()
     {
         if(this.role.equals("tanker"))
         {
-            this.defense += RAND.nextDouble() + 0.4;
+            for(int i=0; i<RAND.nextInt(10)+1; i++)
+            {
+                this.setDefense(RAND.nextDouble() + 0.1);
+            }
         }
         else
         {
-            this.defense += RAND.nextDouble() + 0.1;
+            for(int i=0; i<RAND.nextInt(8)+1; i++)
+            {
+                this.setDefense(RAND.nextDouble() + 0.1);
+            }
         }
-        this.strength-=1;
+        this.defense = Math.round(this.defense * 10.0) / 10.0;
+        this.setStrength(-2);
     }
 
     public void skip()
     {
-        if(this.strength < MAX_STRENGTH)
-        {
-            this.strength+=1;
-        }
-        else
-        {
-            System.out.println(GrapForCombat.printST("\n(!) FULL STRENGTH!\n"));
-        }
+        this.setStrength(2);
+        this.setMana(20);
     }
 
     public void atk(FuncForCombat other, int type)
     {
         double baseDamage = this.damage;
         double extraDamage = 0;
-        double finalDamage;
+        double damageToHP;
         double riskExNor, riskExHea, riskFiNor, riskFiHea;
         
         if(this.role.equals("warrior"))
@@ -208,32 +248,83 @@ public class FuncForCombat
         if(RAND.nextDouble() < ((type == 1) ? riskExNor : riskExHea))
         {
             extraDamage = RAND.nextInt(6) + 1;
+            System.out.println(GrapForCombat.printDA("<CRITICAL HIT! (" + baseDamage + " + " + extraDamage + ")>"));
         }
-        double totalATK = baseDamage + extraDamage;
+        double totalATK = baseDamage + extraDamage + ((other.role.equals("tanker")) ? 3 : 0);
         if(other.defense > 0)
         {
             if(RAND.nextDouble() < ((type == 1) ? riskFiNor : riskFiHea))
             {
-                finalDamage = totalATK; //armor piercing
+                damageToHP = totalATK; //armor piercing
                 System.out.println(GrapForCombat.printDA("<ARMOR PIERCING!>"));
             }
             else
             {
-                finalDamage = Math.max(1, totalATK - other.defense);
-                other.subDefense();
+                if(totalATK <= other.defense)
+                {
+                    System.out.println(GrapForCombat.printDF("<[" + other.name + "] ARMOR ABSORBED " + totalATK + " DAMAGE>"));
+                    other.defense -= totalATK;
+                    damageToHP = 0;
+                }
+                else
+                {
+                    System.out.println(GrapForCombat.printDF("<[" + other.name + "] ARMOR BROKEN>"));
+                    this.setMana(15);
+                    damageToHP = totalATK - other.defense;
+                    other.defense = 0;
+                }
             }
         }
         else
         {
-            finalDamage = totalATK;
+            damageToHP = totalATK;
         }
         
-        if(extraDamage > 0)
+        System.out.println(GrapForCombat.printDA("<[" + this.name + "] DEALT " + damageToHP + " DAMAGE TO [" + other.getName() + "]>"));
+        other.setHP(other.getHP() - damageToHP);
+        this.setStrength((type == 1) ? -1 : -2);
+        this.setMana(((this.role.equals("assassin") && extraDamage > 0) ? ((type == 1) ? 20 : 30) : ((type == 1) ? 10 : 15)));
+        other.setMana(((other.role.equals("tanker")) ? (int)(damageToHP / 2) : 0));
+    }
+
+    public void manaTurn()
+    {
+        if(this.role.equals("warrior"))
         {
-            System.out.println(GrapForCombat.printDA("<CRITICAL HIT! (" + baseDamage + " + " + extraDamage + ")>"));
+            this.setMana(5);
         }
-        System.out.println(GrapForCombat.printDA("<[" + this.name + "] DEALT " + finalDamage + " DAMAGE TO [" + other.getName() + "]>"));
-        other.setHP(other.getHP() - finalDamage);
-        this.strength-= ((type == 1) ? 1 : 2);
+        else if(this.role.equals("assassin"))
+        {
+            this.setMana(3);
+        }
+        else if(this.role.equals("tanker"))
+        {
+            this.setMana(10);
+        }
+    }
+
+    public void ultimate(FuncForCombat other)
+    {
+        if(this.role.equals("warrior"))
+        {
+            GrapForCombat.getGrapRole(this.role);
+            System.out.println(GrapForCombat.printHP("\n<[" + this.name + "] GET " + (this.hp * 0.3) + " HP>"));
+            System.out.println(GrapForCombat.printST("<[" + this.name + "] GET 5 STRENGTH>"));
+            this.hp += this.hp * 0.3;
+            this.setStrength(5);
+        }
+        else if(this.role.equals("assassin"))
+        {
+            GrapForCombat.getGrapRole(this.role);
+            System.out.println(GrapForCombat.printDA("\n<[" + this.name + "] DEALT " + (this.damage * 1.5) + " DAMAGE ARMOR PIERCING TO [" + other.name + "]>"));
+            other.setHP(other.getHP() - this.damage * 1.5);
+        }
+        else if(this.role.equals("tanker"))
+        {
+            GrapForCombat.getGrapRole(this.role);
+            System.out.println(GrapForCombat.printDF("\n<[" + this.name + "] GET 50 DEFENSE>"));
+            this.setDefense(MAX_DEFENSE);
+        }
+        this.setMana(-100);
     }
 }
