@@ -1,19 +1,42 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Combat
 {
     private static final Scanner sc = new Scanner(System.in);
     private static FuncForCombat p1, p2;
-    private static int turn=2, step=1, p=1, choice;
+    private static int turn=2, step, choice;
+    private static String choiceS;
     public static void main(String[] args)
     {
+        GrapForCombat.thumbnail();
+        if(!sc.nextLine().equals("1"))
+        {
+            sc.close();
+            System.exit(0);
+        }
+    
         Combat game = new Combat();
-        p1 = FuncForCombat.createPlayers(p++, sc);
-        p2 = FuncForCombat.createPlayers(p++, sc);
 
-        game.gamePlay();
+        do {
+            step=1;
 
+            p1 = FuncForCombat.createPlayers(1, sc);
+            p2 = FuncForCombat.createPlayers(2, sc);
+
+            game.gamePlay();
+
+            choiceS = sc.nextLine();
+        } while(choiceS.equals("1"));
+
+        System.out.println(GrapForCombat.printNO("<THANKS FOR PLAYING>"));
+        sc.nextLine();
         sc.close();
+        System.exit(0);
     }
 
     private void gamePlay()
@@ -64,7 +87,7 @@ public class Combat
                         System.out.println(GrapForCombat.printDA(choice == 1 ? "\n<ATTACK>" : "\n<HEAVY ATTACK>"));
                         System.out.println(GrapForCombat.printDA("\n<[" + activePlayer.getName() + "] ATTACKED [" + opponent.getName() + "]>\n"));
                         activePlayer.atk(opponent, choice);
-                        if (opponent.getHP() <= activePlayer.getDamage() && opponent.getHP() > 0)
+                        if ((opponent.getHP() + opponent.getDefense()) <= activePlayer.getDamage() && opponent.getHP() > 0)
                         {
                             GrapForCombat.flashWarning(opponent.getName());
                         }
@@ -130,6 +153,35 @@ public class Combat
             step++;
         }
 
-        GrapForCombat.result(p1.getHP() > 0 ? p1 : p2);
+        FuncForCombat winner = (p1.getHP() > 0) ? p1 : p2;
+        FuncForCombat loser = (p1.getHP() > 0) ? p2 : p1;
+        GrapForCombat.result(winner);
+        saveResult(winner, loser, step);
+
+        System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [0]: NO>"));
     }
+
+    public void saveResult(FuncForCombat winner, FuncForCombat loser, int steps)
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("result.txt", true)))
+        {
+            writer.write("==========================================");
+            writer.newLine();
+            writer.write("DATE: " + dtf.format(now));
+            writer.newLine();
+            writer.write("RESULT: [" + winner.getName() + "] (" + winner.getRole() + ") > [" + loser.getName() + "] (" + loser.getRole() + ")");
+            writer.newLine();
+            writer.write("DURATION: " + steps + " steps.");
+            writer.newLine();
+            writer.write("==========================================");
+            writer.newLine();
+            writer.newLine();
+        }
+        catch (IOException e)
+        {
+        }
+}
 }

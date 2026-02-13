@@ -30,6 +30,7 @@ public class FuncForCombat
                 this.damage = 20;
                 this.defense = 0;
                 this.strength = 10;
+                this.mana = 0;
                 break;
             }
 
@@ -41,6 +42,7 @@ public class FuncForCombat
                 this.damage = 25;
                 this.defense = 0;
                 this.strength = 10;
+                this.mana = 0;
                 break;
             }
 
@@ -52,6 +54,7 @@ public class FuncForCombat
                 this.damage = 15;
                 this.defense = 0;
                 this.strength = 10;
+                this.mana = 0;
                 break;
             }
 
@@ -63,6 +66,7 @@ public class FuncForCombat
                 this.damage = 0;
                 this.defense = 0;
                 this.strength = 0;
+                this.mana = 0;
                 break;
             }
         }
@@ -168,7 +172,8 @@ public class FuncForCombat
 
     //---------------------------------------------------------------------METHODS---------------------------------------------------------------------------------------
 
-    //=====================================================================CREATE========================================================================================
+    //|||==================================================================CREATE========================================================================================
+    
     public static FuncForCombat createPlayers(int p, Scanner sc)
     {
         System.out.print("\033[H\033[2J");
@@ -188,7 +193,7 @@ public class FuncForCombat
         return new FuncForCombat(name, role);
     }
 
-    //=====================================================================ACTION========================================================================================
+    //|||==================================================================ACTION========================================================================================
 
     public void def()
     {
@@ -218,6 +223,13 @@ public class FuncForCombat
 
     public void atk(FuncForCombat other, int type)
     {
+        if(dodge(other) == true)
+        {
+            other.setMana((other.role.equals("tanker")) ? 10 : 5);
+            System.out.println(GrapForCombat.printNO("<[" + other.name + "] DODGE>"));
+            return;
+        }
+
         double baseDamage = this.damage;
         double extraDamage = 0;
         double damageToHP;
@@ -280,7 +292,7 @@ public class FuncForCombat
             damageToHP = totalATK;
         }
         
-        System.out.println(GrapForCombat.printDA("<[" + this.name + "] DEALT " + damageToHP + " DAMAGE TO [" + other.getName() + "]>"));
+        System.out.println(GrapForCombat.printDA("<[" + this.name + "] DEALT " + damageToHP + " DAMAGE TO [" + other.name + "]>"));
         other.setHP(other.getHP() - damageToHP);
         this.setStrength((type == 1) ? -1 : -2);
         this.setMana(((this.role.equals("assassin") && extraDamage > 0) ? ((type == 1) ? 20 : 30) : ((type == 1) ? 10 : 15)));
@@ -289,18 +301,20 @@ public class FuncForCombat
 
     public void manaTurn()
     {
-        if(this.role.equals("warrior"))
+        this.setMana((this.role.equals("assassin")) ? 5 : 10);
+    }
+
+    private boolean dodge(FuncForCombat p)
+    {
+        if(p.role.equals("assassin"))
         {
-            this.setMana(5);
+            return (RAND.nextInt(20) + 1 <= 3);
         }
-        else if(this.role.equals("assassin"))
+        if(p.role.equals("tanker"))
         {
-            this.setMana(3);
+            return (RAND.nextInt(20) + 1 <= 1);
         }
-        else if(this.role.equals("tanker"))
-        {
-            this.setMana(10);
-        }
+        return (RAND.nextInt(10) + 1 <= 2);
     }
 
     public void ultimate(FuncForCombat other)

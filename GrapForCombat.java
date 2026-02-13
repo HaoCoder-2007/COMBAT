@@ -48,6 +48,23 @@ public class GrapForCombat
         }
     }
 
+    public static void thumbnail()
+    {
+        clearScreen();
+        System.out.println("\n/=========================================================\\");
+        System.out.println("|<>                   /~~~" + HP_COLOR + " COMBAT " + RESET_COLOR + "~~~\\                  <>|");
+        System.out.println("|<><>                                                 <><>|");
+        System.out.println("|<><><>                    \\    /                   <><><>|");
+        System.out.println("|<><><><>                   \\  /                  <><><><>|");
+        System.out.println("|<><><><><>                  \\/                 <><><><><>|");
+        System.out.println("|<><><><><>                  /\\                 <><><><><>|");
+        System.out.println("|<><><><>                   /  \\                  <><><><>|");
+        System.out.println("|<><><>                   _/_  _\\_                  <><><>|");
+        System.out.println("|<><>" +   DA_COLOR   + "        [1]" +    RESET_COLOR    + "          /      \\" +   DA_COLOR    + "         [0]" +   RESET_COLOR   + "        <><>|");
+        System.out.println("|<>" +   DA_COLOR   + "        <START>                        <QUIT>" +   RESET_COLOR   + "        <>|");
+        System.out.println("\\=========================================================/\n");
+    }
+
     public static void tutor()
     {
         System.out.println("[1]" + DA_COLOR + " ATTACK" + ST_COLOR + " (-1 STRENGTH)" + RESET_COLOR + "\n[2]" + DA_COLOR + " HEAVY ATTACK" + ST_COLOR + " (-2 STRENGTH)" + RESET_COLOR + "\n[3]" + DF_COLOR + " DEFENSE" + ST_COLOR + " (-2 STRENGTH)" + RESET_COLOR + "\n[4]" + HP_COLOR + " >>>ULTMATE<<<" + ST_COLOR + " (-100 MANA)" + RESET_COLOR + "\n[0] SKIP" + ST_COLOR + " (+2 STRENGTH)\n" + RESET_COLOR);
@@ -75,10 +92,10 @@ public class GrapForCombat
 
     public static void result(FuncForCombat p)
     {
-        System.out.println(printNO("\n    <FINISHED!>"));
+        clearScreen();
+        System.out.println(printNO("\n    <FINISHED>"));
         System.out.println(printDA("     <WINNER>"));
         System.out.println(printNO("\n/-/-/-/ [" + p.getName() + "] \\-\\-\\-\\"));
-        GrapForCombat.getGrapRole(p.getRole());
     }
 
     public static void flashWarning(String name)
@@ -109,6 +126,12 @@ public class GrapForCombat
         System.out.print("\033[H\033[2J");
         System.out.flush();
         System.out.printf("*STEP [%d]*\n", step);
+    }
+
+    public static void clearScreen()
+    {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     private static void warrior()
