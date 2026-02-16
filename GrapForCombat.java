@@ -86,7 +86,7 @@ public class GrapForCombat
         System.out.printf("|%-15s |" + DA_COLOR + "%5.1f" + RESET_COLOR + "              |" + DA_COLOR + "%5.1f           " + RESET_COLOR + "|\n", "DAMAGE", p1.getDamage(), p2.getDamage());
         System.out.printf("|%-15s |" + DF_COLOR + "%5.1f" + RESET_COLOR + "              |" + DF_COLOR + "%5.1f           " + RESET_COLOR + "|\n", "DEFENSE", p1.getDefense(), p2.getDefense());
         System.out.printf("|%-15s |" + ST_COLOR + "   %2d" + RESET_COLOR + "              |" + ST_COLOR + "   %2d           " + RESET_COLOR + "|\n", "STRENGTH", p1.getStrength(), p2.getStrength());
-        System.out.printf("|%-15s |" + ST_COLOR + "   %2d" + RESET_COLOR + "              |" + ST_COLOR + "   %2d           " + RESET_COLOR + "|\n", "MANA", p1.getMana(), p2.getMana());
+        System.out.printf("|%-15s |" + ST_COLOR + "  %3d" + RESET_COLOR + "              |" + ST_COLOR + "  %3d           " + RESET_COLOR + "|\n", "MANA", p1.getMana(), p2.getMana());
         System.out.println("\\=====================================================/\n\n");
     }
 
