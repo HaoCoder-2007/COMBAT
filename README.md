@@ -18,12 +18,14 @@
 
     -ANSI Color UI: Enhanced visual experience using terminal colors and custom ASCII art for each role.
 
+
 🛠️ Project Structure
     -Combat.java: The main entry point. Handles the game loop, player turns, and replay logic.
 
     -FuncForCombat.java: The core engine. Manages character stats, damage formulas, and skill mechanics.
 
     -GrapForCombat.java: The graphics controller. Handles terminal rendering, ASCII art, and ANSI color formatting.
+
 
 🚀 Getting Started
     -Prerequisites
@@ -39,6 +41,7 @@
     -Compile the source code:   'javac *.java'
     
     -Launch the game:    'java Combat'
+
 
 🕹️ How to Play
     -Enter names for Player 1 and Player 2.
@@ -56,6 +59,7 @@
         [4] ULTIMATE: Unleash your special move (Requires 100 Mana).
 
         [0] Skip: Recover strength and build Mana.
+
 
 📝 Author Note
     -Developed as a personal project to master Java Object-Oriented Programming (OOP), File I/O, and game logic design.
