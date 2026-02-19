@@ -30,6 +30,7 @@ public class Combat
 
             game.gamePlay();
 
+            System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [other]: NO>"));
             choiceS = sc.next();
             sc.nextLine(); 
         } while(choiceS.equals("1"));
@@ -158,8 +159,6 @@ public class Combat
         FuncForCombat loser = (p1.getHP() > 0) ? p2 : p1;
         GrapForCombat.result(winner);
         saveResult(winner, loser, step);
-
-        System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [0]: NO>"));
     }
 
     public void saveResult(FuncForCombat winner, FuncForCombat loser, int steps)
