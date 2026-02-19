@@ -30,7 +30,8 @@ public class Combat
 
             game.gamePlay();
 
-            choiceS = sc.nextLine();
+            choiceS = sc.next();
+            sc.nextLine(); 
         } while(choiceS.equals("1"));
 
         System.out.println(GrapForCombat.printNO("<THANKS FOR PLAYING>"));
