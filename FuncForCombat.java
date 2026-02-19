@@ -232,6 +232,7 @@ public class FuncForCombat
 
         double baseDamage = this.damage;
         double extraDamage = 0;
+        int extraDamageTank = 0;
         double damageToHP;
         double riskExNor, riskExHea, riskFiNor, riskFiHea;
         
@@ -262,7 +263,15 @@ public class FuncForCombat
             extraDamage = RAND.nextInt(6) + 1;
             System.out.println(GrapForCombat.printDA("<CRITICAL HIT! (" + baseDamage + " + " + extraDamage + ")>"));
         }
-        double totalATK = baseDamage + extraDamage + ((other.role.equals("tanker")) ? 3 : 0);
+
+        if(other.role.equals("tanker"))
+        {
+            extraDamageTank = RAND.nextInt(6) + 1;
+            System.out.println(GrapForCombat.printDA("<BONUS FOR TANKER! (" + extraDamageTank + ")>"));
+        }
+
+        double totalATK = baseDamage + extraDamage + extraDamageTank;
+
         if(other.defense > 0)
         {
             if(RAND.nextDouble() < ((type == 1) ? riskFiNor : riskFiHea))
@@ -306,15 +315,16 @@ public class FuncForCombat
 
     private boolean dodge(FuncForCombat p)
     {
+        int chance = RAND.nextInt(100) + 1;
         if(p.role.equals("assassin"))
         {
-            return (RAND.nextInt(20) + 1 <= 3);
+            return chance <= 20;
         }
         if(p.role.equals("tanker"))
         {
-            return (RAND.nextInt(20) + 1 <= 1);
+            return chance <= 5;
         }
-        return (RAND.nextInt(10) + 1 <= 2);
+        return chance <= 10;
     }
 
     public void ultimate(FuncForCombat other)
