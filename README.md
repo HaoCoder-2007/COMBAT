@@ -1,3 +1,4 @@
+COMBAT
 ⚔️ Console Combat RPG
     -A turn-based RPG combat engine built with Java. This project features a dynamic battle system, character classes, and a localized database for match history, all running directly in your terminal with vibrant ASCII graphics.
 
