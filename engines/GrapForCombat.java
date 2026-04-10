@@ -1,10 +1,12 @@
+package engines;
+
 public class GrapForCombat
 {
-    private static final String HP_COLOR = "\u001B[31m";
-    private static final String DF_COLOR = "\u001B[32m";
-    private static final String DA_COLOR = "\u001B[33m";
-    private static final String ST_COLOR = "\u001B[34m";
-    private static final String NO_COLOR = "\u001B[35m";
+    private static final String HP_COLOR = "\u001B[31m"; //red
+    private static final String DF_COLOR = "\u001B[32m"; //green
+    private static final String DA_COLOR = "\u001B[33m"; //yellow
+    private static final String ST_COLOR = "\u001B[34m"; //blue
+    private static final String NO_COLOR = "\u001B[35m"; //purple
     private static final String RESET_COLOR = "\u001B[0m";
 
     public static String printHP(String s)
@@ -34,17 +36,12 @@ public class GrapForCombat
 
     public static void getGrapRole(String role)
     {
-        if(role.equals("warrior"))
+        switch (role) 
         {
-            warrior();
-        }
-        else if(role.equals("assassin"))
-        {
-            assassin();
-        }
-        else if(role.equals("tanker"))
-        {
-            tanker();
+            case "warrior" -> warrior();
+            case "assassin" -> assassin();
+            case "tanker" -> tanker();
+            default -> {}
         }
     }
 
@@ -107,7 +104,7 @@ public class GrapForCombat
         System.out.print("\n" + red + "<!!! WARNING: " + reset);
         try
         {
-            for (int i = 0; i < 3; i++)
+            for (int i=0; i<3; i++)
             {
                 System.out.print("\r" + red + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
                 Thread.sleep(200);

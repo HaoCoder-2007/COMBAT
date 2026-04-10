@@ -1,8 +1,11 @@
+package engines;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Combat
@@ -10,34 +13,86 @@ public class Combat
     private static final Scanner sc = new Scanner(System.in);
     private static FuncForCombat p1, p2;
     private static int turn=2, step, choice;
-    private static String choiceS;
+    private static boolean isDone, replay = false;
+    
     public static void main(String[] args)
     {
-        GrapForCombat.thumbnail();
-        if(!sc.nextLine().equals("1"))
-        {
-            sc.close();
-            System.exit(0);
-        }
-    
+        isDone = false;
+        do {
+            try
+            {
+                GrapForCombat.thumbnail();
+                System.out.print("=> ");
+                switch(sc.nextInt())   
+                {
+                    case 1: 
+                    {
+                        isDone = true;
+                        break;
+                    }
+                    case 0: 
+                    {
+                        System.out.println(GrapForCombat.printNO("<THANKS FOR PLAYING>"));
+                        sc.nextLine();
+                        System.exit(0);
+                    }
+                    default: 
+                    {
+                        isDone = false;
+                        break;
+                    }
+                }
+            }
+            catch(InputMismatchException e)
+            {
+                sc.nextLine();
+                isDone = false;
+            }
+        } while(!isDone);
+        sc.nextLine();
+
         Combat game = new Combat();
 
+        isDone = true;
         do {
             step=1;
-
+                
             p1 = FuncForCombat.createPlayers(1, sc);
             p2 = FuncForCombat.createPlayers(2, sc);
-
+                
             game.gamePlay();
-
-            System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [other]: NO>"));
-            choiceS = sc.next();
-            sc.nextLine(); 
-        } while(choiceS.equals("1"));
-
+                
+                do {
+                    try
+                    {
+                        System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [other numbers]: NO>"));
+                        System.out.print("=> ");
+                        switch(sc.nextInt())   
+                        {
+                            case 1 -> 
+                            {
+                                isDone = true;
+                                replay = true;
+                                break;
+                            }
+                            default -> 
+                            {
+                                isDone = true;
+                                replay = false;
+                                break;
+                            }
+                        }
+                    }
+                    catch(InputMismatchException e)
+                    {
+                        sc.nextLine();
+                        isDone = false;
+                    }
+                } while(!isDone);
+                sc.nextLine();
+        } while(replay);
         System.out.println(GrapForCombat.printNO("<THANKS FOR PLAYING>"));
         sc.nextLine();
-        sc.close();
         System.exit(0);
     }
 
@@ -50,7 +105,7 @@ public class Combat
             FuncForCombat activePlayer = (turn == 1) ? p1 : p2;
             FuncForCombat opponent = (turn == 1) ? p2 : p1;
 
-            int isDone = 0;
+            boolean next = true;
             do {
                 GrapForCombat.clearScreen(step);
                 System.out.println(GrapForCombat.printNO("\n" + activePlayer.getName() + " TURN:\n"));
@@ -63,12 +118,19 @@ public class Combat
                 }
 
                 do {
-                    System.out.println("=> Your choice: ");
-                    choice = sc.nextInt();
-                    sc.nextLine();
-                    if(!FuncForCombat.isValidChoice(choice))
+                    System.out.print("=> Your choice: ");
+                    try
                     {
-                        GrapForCombat.printNO("<INVALID! PLEASE TRY AGAIN!>");
+                        choice = sc.nextInt();
+                        sc.nextLine();
+                        if(!FuncForCombat.isValidChoice(choice))
+                        {
+                            GrapForCombat.printNO("<INVALID! PLEASE TRY AGAIN!>");
+                        }
+                    }
+                    catch(InputMismatchException e)
+                    {
+                        System.out.println(GrapForCombat.printNO("\n<INVALID! PLEASE TRY AGAIN!>"));
                     }
                 } while(!FuncForCombat.isValidChoice(choice));
 
@@ -76,15 +138,11 @@ public class Combat
 
                 switch(choice)
                 {
-                    case 1:
-                    case 2:
-                    {
+                    case 1, 2 -> {
                         GrapForCombat.clearScreen(step);
-                        if((choice == 1 && activePlayer.getStrength() < 1) || (choice == 2 && activePlayer.getStrength() < 2))
-                        {
+                        if ((choice == 1 && activePlayer.getStrength() < 1) || (choice == 2 && activePlayer.getStrength() < 2)) {
                             System.out.println(GrapForCombat.printST("\n<[" + activePlayer.getName() + "] BURNED OUT>\n"));
                             GrapForCombat.infoAll(p1, p2);
-                            break;
                         }
                         System.out.println(GrapForCombat.printDA(choice == 1 ? "\n<ATTACK>" : "\n<HEAVY ATTACK>"));
                         System.out.println(GrapForCombat.printDA("\n<[" + activePlayer.getName() + "] ATTACKED [" + opponent.getName() + "]>\n"));
@@ -94,63 +152,51 @@ public class Combat
                             GrapForCombat.flashWarning(opponent.getName());
                         }
                         GrapForCombat.infoAll(p1, p2);
-                        isDone = 1;
-                        break;
+                        next = false;
                     }
-
-                    case 3:
-                    {
+                    case 3 -> {
                         GrapForCombat.clearScreen(step);
                         if(activePlayer.getStrength() < 1)
                         {
                             System.out.println(GrapForCombat.printST("\n[" + activePlayer.getName() + "] BURNED OUT!\n"));
                             GrapForCombat.infoAll(p1, p2);
-                            break;
                         }
                         System.out.println(GrapForCombat.printDF("\n<DEFENSE>"));
                         System.out.println(GrapForCombat.printDF("\n<[" + activePlayer.getName() + "] DEFENSE>"));
                         activePlayer.def();
                         GrapForCombat.infoAll(p1, p2);
-                        break;
                     }
 
-                    case 4:
-                    {
+                    case 4 -> {
                         GrapForCombat.clearScreen(step);
                         if(activePlayer.getMana() == 100)
                         {
                             activePlayer.ultimate(opponent);
-                            isDone = 1;
+                            next = false;
                             GrapForCombat.infoAll(p1, p2);
-                            break;
-                        }
-                        else
-                        {
+                        } else {
                             System.out.println(GrapForCombat.printNO("\n<NOT ENOUGH MANA!>"));
                             GrapForCombat.infoAll(p1, p2);
-                            break;
                         }
                     }
 
-                    default:
-                    {
+                    default -> {
                         GrapForCombat.clearScreen(step);
                         System.out.println(GrapForCombat.printNO("\n<SKIP>\n"));
                         activePlayer.skip();
                         GrapForCombat.infoAll(p1, p2);
-                        isDone = 1;
-                        break;
+                        next = false;
                     }
                 }
 
-                if(isDone == 1)
+                if(!next)
                 {
                     System.out.println(GrapForCombat.printNO("\n<TURN ENDED>"));
                     activePlayer.manaTurn();
                 }
                 System.out.println(GrapForCombat.printNO("\n<PRESS [Enter] TO CONTINUE>"));
                 sc.nextLine();
-            } while(isDone == 0);
+            } while(next);
 
             step++;
         }
@@ -166,7 +212,7 @@ public class Combat
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("result.txt", true)))
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("result.txt", true)))
         {
             writer.write("==========================================");
             writer.newLine();
@@ -179,9 +225,12 @@ public class Combat
             writer.write("==========================================");
             writer.newLine();
             writer.newLine();
+
+            System.out.println(GrapForCombat.printDF("\n<SUCCESSFUL>"));
         }
-        catch (IOException e)
+        catch(IOException e)
         {
+            System.out.println(GrapForCombat.printHP("\n<UNSUCCESSFUL>"));
         }
 }
 }
