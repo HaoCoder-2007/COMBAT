@@ -18,6 +18,7 @@ public abstract class FuncForCombat
     protected static final int MAX_STRENGTH = 10;
     protected static final int MAX_MANA = 100;
     protected static final Random RAND = new Random();
+    protected static final int NUM_ROLE = 4; //update every time a new character is added 
 
     //---------------------------------------------------------------------CONSTRUCTORS----------------------------------------------------------------------------------
 
@@ -124,7 +125,7 @@ public abstract class FuncForCombat
 
     public static boolean isValidRole(int role)
     {
-        return (role >= 1 && role <=3);
+        return (role >= 1 && role <=NUM_ROLE);
     }
 
     //---------------------------------------------------------------------METHODS---------------------------------------------------------------------------------------
@@ -165,6 +166,9 @@ public abstract class FuncForCombat
             }
             case 3 -> {  
                 return new Tanker(name);
+            }
+            case 4 -> {
+                return new Archer(name);
             }
             default -> {
                 return null;

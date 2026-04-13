@@ -91,7 +91,8 @@ public class Combat
                 } while(!isDone);
                 sc.nextLine();
         } while(replay);
-        System.out.println(GrapForCombat.printNO("<THANKS FOR PLAYING>"));
+        GrapForCombat.clearScreen();
+        System.out.println(GrapForCombat.printNO("\n\n<THANKS FOR PLAYING>"));
         sc.nextLine();
         System.exit(0);
     }
@@ -143,6 +144,7 @@ public class Combat
                         if ((choice == 1 && activePlayer.getStrength() < 1) || (choice == 2 && activePlayer.getStrength() < 2)) {
                             System.out.println(GrapForCombat.printST("\n<[" + activePlayer.getName() + "] BURNED OUT>\n"));
                             GrapForCombat.infoAll(p1, p2);
+                            break;
                         }
                         System.out.println(GrapForCombat.printDA(choice == 1 ? "\n<ATTACK>" : "\n<HEAVY ATTACK>"));
                         System.out.println(GrapForCombat.printDA("\n<[" + activePlayer.getName() + "] ATTACKED [" + opponent.getName() + "]>\n"));
@@ -153,6 +155,7 @@ public class Combat
                         }
                         GrapForCombat.infoAll(p1, p2);
                         next = false;
+                        break;
                     }
                     case 3 -> {
                         GrapForCombat.clearScreen(step);
@@ -160,11 +163,13 @@ public class Combat
                         {
                             System.out.println(GrapForCombat.printST("\n[" + activePlayer.getName() + "] BURNED OUT!\n"));
                             GrapForCombat.infoAll(p1, p2);
+                            break;
                         }
                         System.out.println(GrapForCombat.printDF("\n<DEFENSE>"));
                         System.out.println(GrapForCombat.printDF("\n<[" + activePlayer.getName() + "] DEFENSE>"));
                         activePlayer.def();
                         GrapForCombat.infoAll(p1, p2);
+                        break;
                     }
 
                     case 4 -> {
@@ -178,6 +183,7 @@ public class Combat
                             System.out.println(GrapForCombat.printNO("\n<NOT ENOUGH MANA!>"));
                             GrapForCombat.infoAll(p1, p2);
                         }
+                        break;
                     }
 
                     default -> {
@@ -186,6 +192,7 @@ public class Combat
                         activePlayer.skip();
                         GrapForCombat.infoAll(p1, p2);
                         next = false;
+                        break;
                     }
                 }
 
@@ -226,11 +233,11 @@ public class Combat
             writer.newLine();
             writer.newLine();
 
-            System.out.println(GrapForCombat.printDF("\n<SUCCESSFUL>"));
+            System.out.println(GrapForCombat.printDF("\n<RESULT SAVED SUCCESSFULLY>"));
         }
         catch(IOException e)
         {
-            System.out.println(GrapForCombat.printHP("\n<UNSUCCESSFUL>"));
+            System.out.println(GrapForCombat.printHP("\n<RESULT SAVED UNSUCCESSFULLY>"));
         }
 }
 }

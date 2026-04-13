@@ -41,6 +41,7 @@ public class GrapForCombat
             case "warrior" -> warrior();
             case "assassin" -> assassin();
             case "tanker" -> tanker();
+            case "archer" -> archer();
             default -> {}
         }
     }
@@ -73,6 +74,7 @@ public class GrapForCombat
         System.out.println("[1] WARRIOR (HP: " + HP_COLOR + "100" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
         System.out.println("[2] ASSASSIN (HP: " + HP_COLOR + "85" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "25" + RESET_COLOR + ")");
         System.out.println("[3] TANKER (HP: " + HP_COLOR + "120" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "15" + RESET_COLOR + ")");
+        System.out.println("[4] ARCHER (HP: " + HP_COLOR + "75" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
     }
 
     public static void infoAll(FuncForCombat p1, FuncForCombat p2)
@@ -179,6 +181,23 @@ public class GrapForCombat
         System.out.println("     \\________/    ");
         System.out.println("                   ");
         System.out.println("      {TANKER}     ");
+        System.out.println("\n");
+    }
+
+    private static void archer()
+    {
+        System.out.println("\n");
+        System.out.println(GrapForCombat.printNO("    <ARROW RAIN>"));
+        System.out.println("                   ");
+        System.out.println("       ^ ^ ^       ");
+        System.out.println("     __|_|_|__     ");
+        System.out.println("    /  | | |  \\    ");
+        System.out.println("   /   | | |   \\   ");
+        System.out.println("   \\___|_|_|___/   ");
+        System.out.println("       | | |       ");
+        System.out.println("       W W W       ");
+        System.out.println("                   ");
+        System.out.println("      {ARCHER}     ");
         System.out.println("\n");
     }
 }
