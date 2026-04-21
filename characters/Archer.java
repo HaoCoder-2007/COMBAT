@@ -9,7 +9,7 @@ public class Archer extends FuncForCombat
         this.name = name;
         this.role = "archer";
         this.hp = NORMAL_HP - 25;
-        this.damage = 20;
+        this.damage = NORMAL_DAMAGE;
         this.defense = 0;
         this.strength = 10;
         this.mana = 0;
@@ -122,8 +122,8 @@ public class Archer extends FuncForCombat
             scheduler.schedule(() -> {
                 if(index < rangeVal - 1) System.out.print(GrapForCombat.printDA("<HIT> "));
                 latch.countDown();
-
-                if(index == rangeVal - 2) System.out.print(GrapForCombat.printDA("<HIT> \n\n<[" + this.name + "] DEALT A TOTAL OF " + rangeVal + " HITS WITH " + (this.damage * 0.1 * rangeVal) + " DAMAGE TO [" + other.getName() + "]>\n"));
+                
+                if(index == rangeVal - 2) System.out.print(GrapForCombat.printDA("<HIT> \n\n>>>------------=>\n\n<[" + this.name + "] DEALT A TOTAL OF " + rangeVal + " HITS WITH " + (this.damage * 0.1 * rangeVal) + " DAMAGE TO [" + other.getName() + "]>"));
                 if(index == rangeVal - 1) scheduler.shutdown();
             }, i * 200, TimeUnit.MILLISECONDS);
         }

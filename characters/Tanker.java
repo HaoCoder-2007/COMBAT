@@ -8,7 +8,7 @@ public class Tanker extends FuncForCombat
         this.name = name;
         this.role = "tanker";
         this.hp = NORMAL_HP + 20;
-        this.damage = 15;
+        this.damage = NORMAL_DAMAGE - 5;
         this.defense = 0;
         this.strength = 10;
         this.mana = 0;
@@ -102,6 +102,7 @@ public class Tanker extends FuncForCombat
     @Override public void ultimate(FuncForCombat other)
     {
         GrapForCombat.getGrapRole(this.role);
+        System.out.print(GrapForCombat.printDF("|||||||||||||||||||||\n"));
         System.out.println(GrapForCombat.printDF("\n<[" + this.name + "] GET 50 DEFENSE>"));
         this.setDefense(MAX_DEFENSE);
         this.setMana(-100);

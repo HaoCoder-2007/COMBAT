@@ -8,7 +8,7 @@ public class Warrior extends FuncForCombat
         this.name = name;
         this.role = "warrior";
         this.hp = NORMAL_HP;
-        this.damage = 20;
+        this.damage = NORMAL_DAMAGE;
         this.defense = 0;
         this.strength = 10;
         this.mana = 0;
@@ -102,9 +102,10 @@ public class Warrior extends FuncForCombat
     @Override public void ultimate(FuncForCombat other)
     {
         GrapForCombat.getGrapRole(this.role);
+        System.out.print(GrapForCombat.printDA("o====}============>\n"));
         System.out.println(GrapForCombat.printHP("\n<[" + this.name + "] GET " + (this.hp * 0.3) + " HP>"));
         System.out.println(GrapForCombat.printST("<[" + this.name + "] GET 5 STRENGTH>"));
-        this.hp += this.hp * 0.3;
+        this.setHP(this.getHP() + NORMAL_HP * 0.3);
         this.setStrength(5);
         this.setMana(-100);
     }

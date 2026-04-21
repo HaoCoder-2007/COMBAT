@@ -1,5 +1,4 @@
 package engines;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -51,6 +50,8 @@ public class Combat
         } while(!isDone);
         sc.nextLine();
 
+        GrapForCombat.loading();
+
         Combat game = new Combat();
 
         isDone = true;
@@ -59,37 +60,44 @@ public class Combat
                 
             p1 = FuncForCombat.createPlayers(1, sc);
             p2 = FuncForCombat.createPlayers(2, sc);
+
+            if (p1 != null && p2 != null)
+            {
+                game.gamePlay();
+            } 
+            else 
+            {
+                isDone = false;
+            }
                 
-            game.gamePlay();
-                
-                do {
-                    try
+            do {
+                try
+                {
+                    System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [other numbers]: NO>"));
+                    System.out.print("=> ");
+                    switch(sc.nextInt())   
                     {
-                        System.out.println(GrapForCombat.printNO("\n<PLAY AGAIN? [1]: YES | [other numbers]: NO>"));
-                        System.out.print("=> ");
-                        switch(sc.nextInt())   
+                        case 1 -> 
                         {
-                            case 1 -> 
-                            {
-                                isDone = true;
-                                replay = true;
-                                break;
-                            }
-                            default -> 
-                            {
-                                isDone = true;
-                                replay = false;
-                                break;
-                            }
+                            isDone = true;
+                            replay = true;
+                            break;
+                        }
+                        default -> 
+                        {
+                            isDone = true;
+                            replay = false;
+                            break;
                         }
                     }
-                    catch(InputMismatchException e)
-                    {
-                        sc.nextLine();
-                        isDone = false;
-                    }
-                } while(!isDone);
-                sc.nextLine();
+                }
+                catch(InputMismatchException e)
+                {
+                    sc.nextLine();
+                    isDone = false;
+                }
+            } while(!isDone);
+            sc.nextLine();
         } while(replay);
         GrapForCombat.clearScreen();
         System.out.println(GrapForCombat.printNO("\n\n<THANKS FOR PLAYING>"));

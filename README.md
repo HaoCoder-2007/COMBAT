@@ -12,6 +12,8 @@ Unique Character Classes: Each class has its own stats and survival logic:
 
     🏹 Archer: High evasion and a multi-hit.
 
+    🔮 Mage: A glass cannon that ignores armor and drains enemy mana.
+
 Modular Architecture: Organized into engines and characters packages for better maintainability and scalability.
 
 Advanced Logic: Features Armor Piercing, Critical Hits, and a class-specific Evasion (Dodge) system.

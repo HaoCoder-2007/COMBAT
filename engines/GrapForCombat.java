@@ -1,4 +1,5 @@
 package engines;
+import static engines.FuncForCombat.RAND;
 
 public class GrapForCombat
 {
@@ -42,6 +43,7 @@ public class GrapForCombat
             case "assassin" -> assassin();
             case "tanker" -> tanker();
             case "archer" -> archer();
+            case "mage" -> mage();
             default -> {}
         }
     }
@@ -71,10 +73,11 @@ public class GrapForCombat
     public static void role()
     {
         System.out.println("\nROLE:");
-        System.out.println("[1] WARRIOR (HP: " + HP_COLOR + "100" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
-        System.out.println("[2] ASSASSIN (HP: " + HP_COLOR + "85" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "25" + RESET_COLOR + ")");
-        System.out.println("[3] TANKER (HP: " + HP_COLOR + "120" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "15" + RESET_COLOR + ")");
-        System.out.println("[4] ARCHER (HP: " + HP_COLOR + "75" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
+        System.out.println("[1] WARRIOR  (HP: " + HP_COLOR + "100" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
+        System.out.println("[2] ASSASSIN (HP: " + HP_COLOR + " 85" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "25" + RESET_COLOR + ")");
+        System.out.println("[3] TANKER   (HP: " + HP_COLOR + "120" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "15" + RESET_COLOR + ")");
+        System.out.println("[4] ARCHER   (HP: " + HP_COLOR + " 75" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "20" + RESET_COLOR + ")");
+        System.out.println("[5] MAGE     (HP: " + HP_COLOR + " 65" + RESET_COLOR + "| DAMAGE: " + DA_COLOR + "30" + RESET_COLOR + ")");
     }
 
     public static void infoAll(FuncForCombat p1, FuncForCombat p2)
@@ -92,8 +95,17 @@ public class GrapForCombat
     public static void result(FuncForCombat p)
     {
         clearScreen();
-        System.out.println(printNO("\n    <FINISHED>"));
-        System.out.println(printDA("     <WINNER>"));
+        System.out.println("\n");
+        for(int i=0; i<p.getName().length()/2; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.println(printNO("     <FINISHED>"));
+        for(int i=0; i<p.getName().length()/2; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.println(printDA("      <WINNER>"));
         System.out.println(printNO("\n/-/-/-/ [" + p.getName() + "] \\-\\-\\-\\"));
     }
 
@@ -106,13 +118,19 @@ public class GrapForCombat
         System.out.print("\n" + red + "<!!! WARNING: " + reset);
         try
         {
-            for (int i=0; i<3; i++)
-            {
-                System.out.print("\r" + red + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
-                Thread.sleep(200);
-                System.out.print("\r" + white + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
-                Thread.sleep(200);
-            }
+            System.out.print("\r" + red + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
+            Thread.sleep(200);
+            System.out.print("\r" + white + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
+            Thread.sleep(200);
+            System.out.print("\r" + red + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
+            Thread.sleep(200);
+            System.out.print("\r" + white + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
+            Thread.sleep(200);
+            System.out.print("\r" + red + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
+            Thread.sleep(200);
+            System.out.print("\r" + white + "<!!! WARNING: [" + name + "] IS DYING !!!>" + reset);
+            Thread.sleep(200);
+
             System.out.println();
         } catch (InterruptedException e)
         {
@@ -131,6 +149,42 @@ public class GrapForCombat
     {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static void loading()
+    {
+        try
+        {
+            String s = "";
+            System.out.print("\nLOADING: 0% []");
+            for(int i=1; i<=100; i++)
+            {
+                waitTime(RAND.nextInt(2) * 60);
+                System.out.printf("\rLOADING: %3d%% [%-33s]", i, s);
+                if(i % 3 == 0)
+                {
+                    s += "/";
+                }
+            }
+            System.out.printf("\rLOADING: 100%% [%-33s]", s);
+            Thread.sleep(1700);
+        }
+        catch(InterruptedException e)
+        {
+
+        }
+    }
+
+    public static void waitTime(int i)
+    {
+        try
+        {
+            Thread.sleep(i);
+        }
+        catch(InterruptedException e)
+        {
+
+        }
     }
 
     private static void warrior()
@@ -199,5 +253,21 @@ public class GrapForCombat
         System.out.println("                   ");
         System.out.println("      {ARCHER}     ");
         System.out.println("\n");
+    }
+
+    private static void mage() 
+    {
+        System.out.println("\n");
+        System.out.println(GrapForCombat.printNO("          <BLACK HOLE>    "));
+        System.out.println("                               ");
+        System.out.println("              .---.            ");
+        System.out.println("       ...  /       \\  ...    ");
+        System.out.println("    ..     |         |     ..  ");
+        System.out.println("  .         \\       /        .");
+        System.out.println("   '..        '---'        ..' ");
+        System.out.println("       '''''         '''''     ");
+        System.out.println("                               ");
+        System.out.println("             {MAGE}            ");
+        System.out.println("\n");   
     }
 }

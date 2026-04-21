@@ -8,7 +8,7 @@ public class Assassin extends FuncForCombat
         this.name = name;
         this.role = "assassin";
         this.hp = NORMAL_HP - 15;
-        this.damage = 25;
+        this.damage = NORMAL_DAMAGE + 5;
         this.defense = 0;
         this.strength = 10;
         this.mana = 0;
@@ -102,7 +102,15 @@ public class Assassin extends FuncForCombat
     @Override public void ultimate(FuncForCombat other)
     {
         GrapForCombat.getGrapRole(this.role);
-        System.out.println(GrapForCombat.printDA("\n<[" + this.name + "] DEALT " + (this.damage * 1.5) + " DAMAGE ARMOR PIERCING TO [" + other.getName() + "]>"));
+        GrapForCombat.waitTime(200);
+        System.out.print("////////////////////////");
+        GrapForCombat.waitTime(100);
+        System.out.print(GrapForCombat.printHP("\r////////////////////////"));
+        GrapForCombat.waitTime(200);
+        System.out.print("\r////////////////////////");
+        GrapForCombat.waitTime(100);
+        System.out.print(GrapForCombat.printHP("\r<====}+-   -+{====>     \n"));
+        System.out.println(GrapForCombat.printDA("\n<[" + this.name + "] DEALT " + (this.damage * 1.5) + " DAMAGE TO [" + other.getName() + "]>"));
         other.setHP(other.getHP() - this.damage * 1.5);
         this.setMana(-100);
     }

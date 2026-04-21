@@ -14,11 +14,12 @@ public abstract class FuncForCombat
     protected String name;
     protected String role;
     protected static final int NORMAL_HP = 100;
+    protected static final int NORMAL_DAMAGE = 20;
     protected static final int MAX_DEFENSE = 50;
     protected static final int MAX_STRENGTH = 10;
     protected static final int MAX_MANA = 100;
     protected static final Random RAND = new Random();
-    protected static final int NUM_ROLE = 4; //update every time a new character is added 
+    protected static final int NUM_ROLE = 5; //update every time a new character is added 
 
     //---------------------------------------------------------------------CONSTRUCTORS----------------------------------------------------------------------------------
 
@@ -120,7 +121,7 @@ public abstract class FuncForCombat
 
     public static boolean isValidChoice(int choice)
     {
-        return (choice >= 0 && choice <=4);
+        return (choice >= 0 && choice <=5);
     }
 
     public static boolean isValidRole(int role)
@@ -169,6 +170,9 @@ public abstract class FuncForCombat
             }
             case 4 -> {
                 return new Archer(name);
+            }
+            case 5 -> {
+                return new Mage(name);
             }
             default -> {
                 return null;
